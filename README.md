@@ -23,10 +23,11 @@ A fully interactive and educational blockchain simulation built using only HTML,
 - [CryptoJS](https://cdnjs.com/libraries/crypto-js) for SHA-256 hashing
 
 ## 📸 Screenshots
-Coming soon...
+![image](https://github.com/user-attachments/assets/7ebb2c4c-02c4-4b54-a4af-795fccd5a104)
+
 
 ## 📂 Live Demo
-_Deploy this easily using GitHub Pages for a shareable link!_
+(https://kunwar1908.github.io/Blockchain-Visualiser/)
 
 ## 👨‍💻 Author
 Made with ❤️ by Kunwarpreet Singh
