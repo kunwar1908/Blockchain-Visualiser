@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Blockchain Visualizer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</head>
+<body>
+  <div class="header">
+    <h1>🧱 Mini Blockchain Simulator</h1>
+    <button id="themeToggle">🌙 Toggle Dark Mode</button>
+  </div>
+  <div class="input-area">
+    <input type="text" id="dataInput" placeholder="Enter block data..." />
+    <button onclick="addBlock()">➕ Add Block</button>
+    <button onclick="simulateConsensus()">⚖️ Simulate Consensus</button>
+  </div>
+  <div id="blockchain"></div>
+  <div id="consensusOutput"></div>
+  <script src="script.js"></script>
+</body>
+</html>
