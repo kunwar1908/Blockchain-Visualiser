@@ -14,12 +14,35 @@ class Block {
     ).toString();
   }
 
-  mineBlock(difficulty) {
-    while (this.hash.substring(0, difficulty) !== "0".repeat(difficulty)) {
-      this.nonce++;
-      this.hash = this.calculateHash();
+async mineBlock(difficulty, blockDiv) {
+  const start = performance.now();
+  let attempts = 0;
+  
+  blockDiv.innerHTML += '<p><strong>Mining Status:</strong> ⛏️ Mining...</p>'; 
+  await new Promise((resolve) => setTimeout(resolve, 500)); 
+
+  while (this.hash.substring(0, difficulty) !== "0".repeat(difficulty)) {
+    this.nonce++;
+    attempts++;
+    this.hash = this.calculateHash();
+
+    if (attempts % 500 === 0) {
+      blockDiv.innerHTML = `<p><strong>Nonce Attempts:</strong> ${attempts}</p>
+        <p><strong>Current Hash:</strong> ${this.hash}</p>
+        <p><strong>Mining Status:</strong> ⛏️ Mining...</p>`;
+      await new Promise((resolve) => setTimeout(resolve, 50)); 
     }
   }
+
+  const end = performance.now();
+  this.miningTime = (end - start).toFixed(2);
+  this.attempts = attempts;
+
+  blockDiv.innerHTML = `<p><strong>Nonce Attempts:</strong> ${this.attempts}</p>
+    <p><strong>Mining Time:</strong> ${this.miningTime} ms</p>
+    <p><strong>Final Hash:</strong> ${this.hash}</p>
+    <p><strong>✅ Mining Completed!</strong></p>`;
+}
 
   isValid(prevBlock) {
     return this.prevHash === prevBlock.hash &&
@@ -35,8 +58,18 @@ function addBlock() {
   const prevHash = chain.length ? chain[chain.length - 1].hash : "0";
   const newBlock = new Block(chain.length, data, prevHash);
 
-  newBlock.mineBlock(difficulty);
-  chain.push(newBlock);
+  // Find the container for this block to pass to mineBlock
+  const container = document.getElementById("blockchain");
+  const blockDiv = document.createElement("div");
+  blockDiv.className = "block";
+  container.appendChild(blockDiv);
+
+  newBlock.mineBlock(difficulty, blockDiv).then(() => {
+    chain.push(newBlock);
+    document.getElementById("dataInput").value = "";
+    renderChain();
+  });
+  return;
 
   document.getElementById("dataInput").value = "";
   renderChain();
@@ -65,6 +98,10 @@ function renderChain() {
       </p>
       <p><strong>Prev Hash:</strong> ${block.prevHash}</p>
       <p><strong>Hash:</strong> ${block.hash}</p>
+      ${block.miningTime ? `
+  <p><strong>Nonce Attempts:</strong> ${block.attempts}</p>
+  <p><strong>Mining Time:</strong> ${block.miningTime} ms</p>
+` : ''}
     `;
     container.appendChild(blockDiv);
   });
